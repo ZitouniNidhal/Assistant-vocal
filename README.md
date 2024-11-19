@@ -1,1 +1,1 @@
-"# Assistant-vocal" 
+Un assistant vocal intelligent qui peut comprendre et répondre aux commandes vocales des utilisateurs, fournissant des réponses et des actions adaptées selon la demande. L'assistant sera développé en  C# et intégrera des frameworks de traitement de la voix.
