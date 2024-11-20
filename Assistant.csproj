@@ -1,15 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <OutputType>WinExe</OutputType> <!-- Assurez-vous que le type de sortie est WinExe pour une application Windows -->
+    <TargetFramework>net8.0-windows</TargetFramework> <!-- Assurez-vous d'ajouter '-windows' -->
+    <UseWPF>false</UseWPF> <!-- Si vous n'utilisez pas WPF, vous pouvez désactiver cette option -->
+    <UseWindowsForms>true</UseWindowsForms> <!-- Active Windows Forms -->
+</PropertyGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.41.1" />
     <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="System.Speech" Version="9.0.0" />
     <PackageReference Include="vosk" Version="0.3.38" />
   </ItemGroup>
 

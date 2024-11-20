@@ -1,3 +1,5 @@
+using System;
+
 namespace VoiceAssistant
 {
     public static class AssistantLogic
