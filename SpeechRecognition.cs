@@ -1,5 +1,6 @@
 using System;
-using Microsoft.CognitiveServices.Speech;
+using Vosk;
+using NAudio.Wave;
 
 namespace VoiceAssistant
 {
@@ -7,19 +8,35 @@ namespace VoiceAssistant
     {
         public static string RecognizeSpeech()
         {
-            var config = SpeechConfig.FromSubscription("YOUR_AZURE_SUBSCRIPTION_KEY", "YOUR_REGION");
-            using var recognizer = new SpeechRecognizer(config);
-            
-            var result = recognizer.RecognizeOnceAsync().Result;
-            if (result.Reason == ResultReason.RecognizedSpeech)
+            Vosk.Vosk.SetLogLevel(0);
+           var modelPath = @"C:\Z-Projets\Deep Learning\Assistant\vosk-model-small-en-us-0.15"; // Remplace ce chemin par ton chemin exact
+            var model = new Model(modelPath);
+
+            using (var waveIn = new WaveInEvent())
             {
-                return result.Text;
+                waveIn.WaveFormat = new WaveFormat(16000, 1);
+                var rec = new VoskRecognizer(model, 16000.0f);
+
+                waveIn.DataAvailable += (s, e) =>
+                {
+                    if (rec.AcceptWaveform(e.Buffer, e.BytesRecorded))
+                    {
+                        Console.WriteLine(rec.Result());
+                    }
+                    else
+                    {
+                        Console.WriteLine(rec.PartialResult());
+                    }
+                };
+
+                waveIn.StartRecording();
+                Console.WriteLine("Press any key to stop...");
+                Console.ReadKey();
+                waveIn.StopRecording();
             }
-            else
-            {
-                Console.WriteLine("Erreur lors de la reconnaissance vocale.");
-                return null;
-            }
+
+            return "Recognition complete";
         }
     }
 }
+
