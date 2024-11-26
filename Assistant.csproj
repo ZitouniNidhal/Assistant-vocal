@@ -1,22 +1,15 @@
-<<<<<<<<< Temporary merge branch 1
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType> <!-- Assurez-vous que le type de sortie est WinExe pour une application Windows -->
-    <TargetFramework>net8.0-windows</TargetFramework> <!-- Assurez-vous d'ajouter '-windows' -->
-    <UseWPF>false</UseWPF> <!-- Si vous n'utilisez pas WPF, vous pouvez désactiver cette option -->
-    <UseWindowsForms>true</UseWindowsForms> <!-- Active Windows Forms -->
-</PropertyGroup>
-
-</Project>
-=========
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Emgu.CV" Version="4.9.0.5494" />
+  </ItemGroup>
 
 </Project>

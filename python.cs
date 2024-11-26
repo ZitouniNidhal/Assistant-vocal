@@ -1,25 +1,28 @@
 using System.Diagnostics;
 
-public class PythonIntegration
+namespace VoiceAssistant
 {
-    public string RunPythonScript(string scriptPath, string arguments)
+    public class PythonIntegration
     {
-        ProcessStartInfo startInfo = new ProcessStartInfo()
+        public string RunPythonScript(string scriptPath, string arguments)
         {
-            FileName = "python",  // Assure-toi que Python est bien installé et accessible dans le PATH
-            Arguments = $"{scriptPath} {arguments}",
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            CreateNoWindow = true
-        };
+            ProcessStartInfo startInfo = new ProcessStartInfo()
+            {
+                FileName = "python",  // Assure-toi que Python est bien installé et accessible dans le PATH
+                Arguments = $"{scriptPath} {arguments}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
 
-        Process process = new Process();
-        process.StartInfo = startInfo;
-        process.Start();
+            Process process = new Process();
+            process.StartInfo = startInfo;
+            process.Start();
 
-        string output = process.StandardOutput.ReadToEnd();
-        process.WaitForExit();
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
 
-        return output;
+            return output;
+        }
     }
 }
