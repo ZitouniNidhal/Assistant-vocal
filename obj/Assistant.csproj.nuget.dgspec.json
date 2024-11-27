@@ -53,6 +53,10 @@
             "Emgu.CV": {
               "target": "Package",
               "version": "[4.9.0.5494, )"
+            },
+            "Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime": {
+              "target": "Package",
+              "version": "[3.0.0, )"
             }
           },
           "imports": [

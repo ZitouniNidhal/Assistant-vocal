@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Emgu.CV" Version="4.9.0.5494" />
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime" Version="3.0.0" />
   </ItemGroup>
 
 </Project>
