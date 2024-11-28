@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
 
@@ -6,30 +7,32 @@ namespace VoiceAssistant
 {
     public static class NaturalLanguageUnderstanding
     {
-        private static readonly LuisRuntimeClient _luisClient;
+        private static  LUISRuntimeClient _luisClient;
 
         static NaturalLanguageUnderstanding()
         {
-            _luisClient = new LuisRuntimeClient(new ApiKeyServiceClientCredentials("YOUR_LUIS_API_KEY"))
+            _luisClient = new LUISRuntimeClient(new ApiKeyServiceClientCredentials("YOUR_LUIS_API_KEY"))
             {
                 Endpoint = "https://YOUR_LUIS_REGION.api.cognitive.microsoft.com/"
             };
         }
 
-        public static (string Intent, Dictionary<string, string>) AnalyzeCommand(string command)
+        public static (string Intent, Dictionary<string, string> Entities) AnalyzeCommand(string command)
         {
             var request = new PredictionRequest { Query = command };
-            var response = _luisClient.Prediction.GetSlotPredictionAsync("YOUR_LUIS_APP_ID", "YOUR_LUIS_SLOT_NAME", request).Result;
+            var response = _luisClient.Prediction.GetSlotPredictionAsync("YOUR_LUIS_APP_ID", Guid.Parse("YOUR_LUIS_SLOT_ID"), request).Result;
 
-            var intent = response.TopIntent?.IntentName;
+            string intent = response.Prediction.TopIntent;
             var entities = new Dictionary<string, string>();
 
-            foreach (var entity in response.Entities)
+            foreach (var entity in response.Prediction.Entities)
             {
-                entities.Add(entity.Type, entity.Entity);
+                var entityValue = (Newtonsoft.Json.Linq.JObject)entity.Value;
+                entities[entity.Key] = entityValue["entity"].ToString(); // Use indexer to add entities
             }
 
             return (intent, entities);
         }
+
     }
 }
