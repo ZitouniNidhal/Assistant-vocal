@@ -20,7 +20,7 @@ namespace VoiceAssistant
         public static (string Intent, Dictionary<string, string> Entities) AnalyzeCommand(string command)
         {
             var request = new PredictionRequest { Query = command };
-            var response = _luisClient.Prediction.GetSlotPredictionAsync("YOUR_LUIS_APP_ID", Guid.Parse("YOUR_LUIS_SLOT_ID"), request).Result;
+            var response = _luisClient.Prediction.GetSlotPredictionAsync("1455887587887", Guid.Parse("7488954666"), request).Result;
 
             string intent = response.Prediction.TopIntent;
             var entities = new Dictionary<string, string>();
