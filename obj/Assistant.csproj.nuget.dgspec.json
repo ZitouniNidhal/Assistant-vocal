@@ -57,6 +57,14 @@
             "Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime": {
               "target": "Package",
               "version": "[3.0.0, )"
+            },
+            "NAudio": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
+            "Vosk": {
+              "target": "Package",
+              "version": "[0.3.38, )"
             }
           },
           "imports": [

@@ -9,7 +9,7 @@ namespace VoiceAssistant
         public static string RecognizeSpeech()
         {
             Vosk.Vosk.SetLogLevel(0);
-           var modelPath = @"C:\Z-Projets\Deep Learning\Assistant\vosk-model-small-en-us-0.15"; // Remplace ce chemin par ton chemin exact
+           var modelPath = Environment.GetEnvironmentVariable("VOSK_MODEL_PATH") ?? throw new InvalidOperationException("VOSK_MODEL_PATH environment variable is not set.");
             var model = new Model(modelPath);
 
             using (var waveIn = new WaveInEvent())

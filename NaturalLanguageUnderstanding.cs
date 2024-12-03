@@ -8,7 +8,7 @@ namespace VoiceAssistant
 {
         public static class NaturalLanguageUnderstanding
     {
-        private static LUISRuntimeClient _luisClient;
+        private static LUISRuntimeClient? _luisClient;
         private const string LuisAppId = "YOUR_LUIS_APP_ID"; // Store your LUIS App ID here
         private const string LuisApiKey = "YOUR_LUIS_API_KEY";
         private const string LuisEndpoint = "https://YOUR_LUIS_REGION.api.cognitive.microsoft.com/";
@@ -38,13 +38,17 @@ namespace VoiceAssistant
             if (string.IsNullOrWhiteSpace(command))
             {
                 Console.WriteLine("Command cannot be null or empty.");
-                return (null, null);
+                return (string.Empty, new Dictionary<string, string>());
             }
     
             try
             {
                 var request = new PredictionRequest { Query = command };
-                var response = _luisClient.Prediction.GetSlotPredictionAsync(LuisAppId, "YOUR_SLOT_NAME", request).Result;
+                if (_luisClient == null)
+                {
+                    throw new InvalidOperationException("LUIS client is not initialized.");
+                }
+                var response = _luisClient.Prediction.GetSlotPredictionAsync(Guid.Parse(LuisAppId), "YOUR_SLOT_NAME", request).Result;
     
                 string intent = response.Prediction.TopIntent;
                 var entities = new Dictionary<string, string>();
@@ -60,7 +64,7 @@ namespace VoiceAssistant
             catch (Exception ex)
             {
                 Console.WriteLine($"Error analyzing command: {ex.Message}");
-                return (null, null);
+                return (string.Empty, new Dictionary<string, string>());
             }
         }
     
