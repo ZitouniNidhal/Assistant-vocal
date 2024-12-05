@@ -2,11 +2,6 @@ using Vosk
 using HTTP
 using JSON
 
-const MODEL_PATH = "path/to/your/vosk/model"  # Set the path to your Vosk model
-const LUIS_APP_ID = "YOUR_LUIS_APP_ID"
-const LUIS_API_KEY = "YOUR_LUIS_API_KEY"
-const LUIS_ENDPOINT = "https://YOUR_LUIS_REGION.api.cognitive.microsoft.com/"
-
 # Function to recognize speech
 function recognize_speech()
     model = Vosk.Model(MODEL_PATH)

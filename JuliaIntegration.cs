@@ -31,7 +31,7 @@ namespace VoiceAssistant
                 // Vérifiez s'il y a des erreurs
                 if (!string.IsNullOrEmpty(error))
                 {
-                    throw new Exception($"Erreur lors de l'exécution du script Julia : {error}");
+                    throw new InvalidOperationException($"Erreur lors de l'exécution du script Julia : {error}");
                 }
 
                 return output;
