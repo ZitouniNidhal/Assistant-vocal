@@ -6,11 +6,12 @@ using JSON
 function recognize_speech()
     model = Vosk.Model(MODEL_PATH)
     rec = Vosk.Recognizer(model, 16000.0)
-
-    # Open audio input (microphone)
-    audio_input = Vosk.AudioInput()
-
-    println("Assistant ready. Speak...")
+    model = Vosk.Model(MODEL_PATH)
+    rec = Vosk.Recognizer(model, 16000.0)
+    model = Vosk.Model(MODEL_PATH)
+    rec = Vosk.Recognizer(model, 16000.0)
+    model = Vosk.Model(MODEL_PATH)
+    rec = Vosk.Recognizer(model, 16000.0)
 
     while true
         audio_chunk = read(audio_input, 4096)
