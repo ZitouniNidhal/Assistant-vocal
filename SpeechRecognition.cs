@@ -1,42 +1,46 @@
 using System;
-using Vosk;
-using NAudio.Wave;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace VoiceAssistant
 {
+    // Classe de simulation simple pour la reconnaissance vocale.
+    // En production, remplacez RecognizeNextAsync par un wrapper autour d'une vraie API (System.Speech, DeepSpeech, Vosk, etc.)
     public static class SpeechRecognition
     {
-        public static string RecognizeSpeech()
+        private static readonly ConcurrentQueue<string> queue = new ConcurrentQueue<string>();
+
+        public static void EnqueueCommand(string command)
         {
-            Vosk.Vosk.SetLogLevel(0);
-           var modelPath = Environment.GetEnvironmentVariable("VOSK_MODEL_PATH") ?? throw new InvalidOperationException("VOSK_MODEL_PATH environment variable is not set.");
-            var model = new Model(modelPath);
+            if (string.IsNullOrWhiteSpace(command)) return;
+            queue.Enqueue(command);
+        }
 
-            using (var waveIn = new WaveInEvent())
+        // Attend qu'une commande soit disponible ou renvoie null après un petit timeout
+        public static async Task<string> RecognizeNextAsync(CancellationToken ct)
+        {
+            // Vérifier rapidement s'il y a déjà une commande
+            if (queue.TryDequeue(out var existing))
+                return existing;
+
+            // Sinon attendre pendant un petit intervalle et réessayer jusqu'à annulation
+            while (!ct.IsCancellationRequested)
             {
-                waveIn.WaveFormat = new WaveFormat(16000, 1);
-                var rec = new VoskRecognizer(model, 16000.0f);
+                if (queue.TryDequeue(out var cmd))
+                    return cmd;
 
-                waveIn.DataAvailable += (s, e) =>
+                try
                 {
-                    if (rec.AcceptWaveform(e.Buffer, e.BytesRecorded))
-                    {
-                        Console.WriteLine(rec.Result());
-                    }
-                    else
-                    {
-                        Console.WriteLine(rec.PartialResult());
-                    }
-                };
-
-                waveIn.StartRecording();
-                Console.WriteLine("Press any key to stop...");
-                Console.ReadKey();
-                waveIn.StopRecording();
+                    await Task.Delay(300, ct);
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
             }
 
-            return "Recognition complete";
+            return null;
         }
     }
 }
-
