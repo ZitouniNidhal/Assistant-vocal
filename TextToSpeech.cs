@@ -1,20 +1,35 @@
 using System;
-using Microsoft.CognitiveServices.Speech;
+using System.Diagnostics;
 
 namespace VoiceAssistant
 {
     public static class TextToSpeech
     {
+        // Implémentation simple : sur Windows on utilise System.Speech.Synthesis si disponible.
+        // Si l'assembly n'est pas présent, on tombe en fallback qui n'empêche pas l'exécution.
         public static void Speak(string text)
         {
-            var config = SpeechConfig.FromSubscription("YOUR_AZURE_SUBSCRIPTION_KEY", "YOUR_REGION");
-            using var synthesizer = new SpeechSynthesizer(config);
-            
-            var result = synthesizer.SpeakTextAsync(text).Result;
-            if (result.Reason != ResultReason.SynthesizingAudioCompleted)
+            if (string.IsNullOrWhiteSpace(text)) return;
+
+            try
             {
-                Console.WriteLine("Erreur lors de la synthèse vocale.");
+                // Utiliser System.Speech.Synthesis si disponible (Windows .NET Framework)
+                Type synthType = Type.GetType("System.Speech.Synthesis.SpeechSynthesizer, System.Speech");
+                if (synthType != null)
+                {
+                    dynamic synth = Activator.CreateInstance(synthType);
+                    synth.Speak(text);
+                    (synth as IDisposable)?.Dispose();
+                    return;
+                }
             }
+            catch
+            {
+                // ignore and fallback
+            }
+
+            // Fallback : ouvrir une notification son / log (ici on écrit simplement dans le debug)
+            Debug.WriteLine("TTS (fallback): " + text);
         }
     }
 }
